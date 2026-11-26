@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Etsy Fee Calculator 2026 — See What Etsy Takes</title>
+<meta name="description" content="Free Etsy fee calculator: enter your item price and shipping to see Etsy's listing, transaction, and payment processing fees — and what you actually keep.">
+<style>
+  * { box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f7f7f2; color: #1a1a1a; margin: 0; padding: 0; line-height: 1.6; }
+  .wrap { max-width: 640px; margin: 0 auto; padding: 32px 20px 48px; }
+  h1 { font-size: 30px; line-height: 1.25; margin: 0 0 8px; }
+  .sub { color: #555; margin: 0 0 28px; }
+  .card { background: #fff; border: 1px solid #e3e3dc; border-radius: 12px; padding: 24px; margin-bottom: 24px; }
+  label { display: block; font-weight: 600; margin: 16px 0 6px; }
+  label:first-child { margin-top: 0; }
+  input[type="number"], select { width: 100%; padding: 12px; font-size: 17px; border: 1px solid #ccc; border-radius: 8px; }
+  .hint { font-size: 13px; color: #777; margin-top: 4px; }
+  .check { display: flex; align-items: flex-start; gap: 10px; margin-top: 20px; font-weight: 600; }
+  .check input { width: 20px; height: 20px; margin-top: 2px; }
+  .row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #eee; }
+  .row:last-child { border-bottom: none; }
+  .total { font-size: 20px; font-weight: 700; }
+  .keep { font-size: 26px; font-weight: 800; color: #2e7d32; }
+  .keep-label { font-weight: 700; }
+  .examples { margin-top: 16px; }
+  .examples button { background: #eef3e6; border: 1px solid #cfe0bd; border-radius: 999px; padding: 6px 14px; margin: 0 6px 6px 0; font-size: 14px; cursor: pointer; }
+  .cta { background: #1a7f37; color: #fff; border-radius: 12px; padding: 24px; text-align: center; margin-bottom: 24px; }
+  .cta h2 { margin: 0 0 8px; font-size: 21px; }
+  .cta p { margin: 0 0 16px; opacity: 0.95; }
+  .cta a { display: inline-block; background: #fff; color: #1a7f37; font-weight: 700; text-decoration: none; padding: 12px 24px; border-radius: 999px; }
+  h2 { font-size: 21px; margin: 0 0 12px; }
+  table { width: 100%; border-collapse: collapse; font-size: 15px; }
+  th, td { text-align: left; padding: 8px 0; border-bottom: 1px solid #eee; }
+  th:last-child, td:last-child { text-align: right; }
+  .faq p { margin: 0 0 14px; }
+  .faq strong { display: block; }
+  .fine { font-size: 13px; color: #777; }
+  .footer { text-align: center; font-size: 14px; color: #777; margin-top: 32px; }
+  .footer a { color: #1a7f37; }
+  .hidden { display: none; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Etsy Fee Calculator</h1>
+  <p class="sub">Free, no sign-up. Enter your price and shipping to see exactly what Etsy takes — and what you keep.</p>
+
+  <div class="card">
+    <label for="price">Item price ($)</label>
+    <input type="number" id="price" min="0" step="0.01" value="30" inputmode="decimal">
+    <label for="shipping">Shipping you charge the buyer ($)</label>
+    <input type="number" id="shipping" min="0" step="0.01" value="6" inputmode="decimal">
+    <p class="hint">Enter 0 if you offer free shipping. Etsy charges its percentage fees on the item price plus shipping.</p>
+    <div class="check">
+      <input type="checkbox" id="offsite">
+      <span>Sale came from an Etsy Offsite Ad</span>
+    </div>
+    <div id="salesRow" class="hidden">
+      <label for="sales">Your shop's sales in the last 12 months</label>
+      <select id="sales">
+        <option value="under">Under $10,000 — Offsite Ads fee is 15%</option>
+        <option value="over">$10,000 or more — Offsite Ads fee is 12%</option>
+      </select>
+    </div>
+    <div class="examples">
+      <button type="button" data-price="20" data-shipping="0">$20 item, free shipping</button>
+      <button type="button" data-price="30" data-shipping="6">$30 item + $6 shipping</button>
+      <button type="button" data-price="50" data-shipping="5">$50 item + $5 shipping</button>
+    </div>
+  </div>
+
+  <div class="card" id="results">
+    <div class="row"><span>Listing fee</span><span id="rListing">$0.20</span></div>
+    <div class="row"><span>Transaction fee (6.5%)</span><span id="rTransaction">$2.34</span></div>
+    <div class="row"><span>Payment processing (3% + $0.25)</span><span id="rProcessing">$1.33</span></div>
+    <div class="row hidden" id="offsiteRow"><span>Offsite Ads fee</span><span id="rOffsite">$0.00</span></div>
+    <div class="row total"><span>Total Etsy fees</span><span id="rTotal">$3.87</span></div>
+    <div class="row"><span class="keep-label">You keep</span><span class="keep" id="rKeep">$32.13</span></div>
+    <div class="row"><span>Etsy takes</span><span id="rPct">10.8% of the order</span></div>
+  </div>
+
+  <div class="cta">
+    <h2>Want more than the fees?</h2>
+    <p>The Etsy Listing Audit Checker scores your title, photos, tags, and pricing — and tells you exactly what to fix. $19, instant download.</p>
+    <a href="https://payhip.com/b/8IsVa" target="_blank" rel="noopener">Get the Etsy Listing Audit Checker →</a>
+  </div>
+
+  <div class="card">
+    <h2>How Etsy fees work in 2026</h2>
+    <table>
+      <tr><th>Fee</th><th>Rate</th></tr>
+      <tr><td>Listing fee</td><td>$0.20 per listing</td></tr>
+      <tr><td>Transaction fee</td><td>6.5% of price + shipping</td></tr>
+      <tr><td>Payment processing (US)</td><td>3% + $0.25 per order</td></tr>
+      <tr><td>Offsite Ads fee</td><td>12–15% of price + shipping</td></tr>
+    </table>
+    <p style="margin-top:16px;">Every Etsy sale pays the $0.20 listing fee and the 6.5% transaction fee. Payment processing depends on your country — 3% + $0.25 is the US rate. The Offsite Ads fee only applies if the sale came from an Etsy ad: 15% for shops under $10,000 in annual sales, 12% for shops over $10,000. Listings last four months and renew for $0.20.</p>
+  </div>
+
+  <div class="card faq">
+    <h2>Common questions</h2>
+    <p><strong>How much does Etsy take from a sale?</strong>For a US shop, about 9.5% + $0.45 on every order, before the listing fee — 6.5% transaction plus 3% + $0.25 payment processing, charged on the price plus shipping.</p>
+    <p><strong>Does Etsy charge fees on shipping?</strong>Yes. The 6.5% transaction fee and the 3% payment processing fee are both charged on the item price plus the shipping you charge the buyer. Free shipping means those fees only apply to the item price.</p>
+    <p><strong>What is the Offsite Ads fee?</strong>Etsy advertises your listings on Google, Facebook, and other sites. If one of those ads leads to a sale within 30 days, Etsy takes an extra 12% or 15%. Shops under $10,000 in sales can opt out; shops over $10,000 cannot.</p>
+    <p class="fine">Rates are US Etsy rates as of November 2026, checked against Etsy's Fees &amp; Payments Policy. Payment processing rates and regulatory fees vary by country. Sales tax is not included — Etsy collects and remits it separately in most places.</p>
+  </div>
+
+  <div class="footer">
+    Free tool by <a href="https://youtubefelix123-max.github.io/budget-in-a-minute/">Budget in a Minute</a> ·
+    <a href="https://payhip.com/BudgetinaMinute">Shop our budgeting tools and templates</a>
+  </div>
+</div>
+<script>
+(function () {
+  var priceEl = document.getElementById('price');
+  var shipEl = document.getElementById('shipping');
+  var offsiteEl = document.getElementById('offsite');
+  var salesEl = document.getElementById('sales');
+  var salesRow = document.getElementById('salesRow');
+  var offsiteRow = document.getElementById('offsiteRow');
+
+  function money(n) { return '$' + n.toFixed(2); }
+
+  function calc() {
+    var price = parseFloat(priceEl.value) || 0;
+    var shipping = parseFloat(shipEl.value) || 0;
+    if (price < 0) price = 0;
+    if (shipping < 0) shipping = 0;
+    var subtotal = price + shipping;
+    var listing = 0.20;
+    var transaction = 0.065 * subtotal;
+    var processing = 0.03 * subtotal + 0.25;
+    var offsite = 0;
+    if (offsiteEl.checked) {
+      var rate = salesEl.value === 'over' ? 0.12 : 0.15;
+      offsite = rate * subtotal;
+    }
+    var total = listing + transaction + processing + offsite;
+    var keep = subtotal - total;
+    var pct = subtotal > 0 ? (total / subtotal * 100) : 0;
+    document.getElementById('rListing').textContent = money(listing);
+    document.getElementById('rTransaction').textContent = money(transaction);
+    document.getElementById('rProcessing').textContent = money(processing);
+    document.getElementById('rOffsite').textContent = money(offsite);
+    document.getElementById('rTotal').textContent = money(total);
+    document.getElementById('rKeep').textContent = money(keep);
+    document.getElementById('rPct').textContent = pct.toFixed(1) + '% of the order';
+    offsiteRow.classList.toggle('hidden', !offsiteEl.checked);
+    salesRow.classList.toggle('hidden', !offsiteEl.checked);
+  }
+
+  priceEl.addEventListener('input', calc);
+  shipEl.addEventListener('input', calc);
+  offsiteEl.addEventListener('change', calc);
+  salesEl.addEventListener('change', calc);
+  document.querySelectorAll('.examples button').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      priceEl.value = btn.getAttribute('data-price');
+      shipEl.value = btn.getAttribute('data-shipping');
+      calc();
+    });
+  });
+  calc();
+})();
+</script>
+</body>
+</html>
